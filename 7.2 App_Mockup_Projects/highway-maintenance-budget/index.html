@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto Anual de Mantenimiento de Autopistas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Presupuesto Anual de Mantenimiento de Autopistas</h1>
+    </header>
+
+    <main>
+        <section class="project-info">
+            <h2>Información del Proyecto</h2>
+            <div class="form-group">
+                <label for="project-name">Nombre del Proyecto:</label>
+                <input type="text" id="project-name" placeholder="Ej: Mantenimiento Ruta 5 Sur">
+            </div>
+            <div class="form-group">
+                <label for="project-year">Año del Presupuesto:</label>
+                <input type="number" id="project-year" min="2025" max="2030" value="2025">
+            </div>
+            <div class="form-group">
+                <label for="project-length">Longitud de la Autopista (km):</label>
+                <input type="number" id="project-length" min="1" step="0.1">
+            </div>
+        </section>
+
+        <section class="work-selection">
+            <h2>Selección de Trabajos</h2>
+            <div class="work-types">
+                <div class="work-type" data-type="pavimentacion">
+                    <h3>Pavimentación</h3>
+                    <button class="add-work-btn" data-work="pavimentacion">Agregar</button>
+                </div>
+                <div class="work-type" data-type="pintura">
+                    <h3>Pintura</h3>
+                    <button class="add-work-btn" data-work="pintura">Agregar</button>
+                </div>
+                <div class="work-type" data-type="senales">
+                    <h3>Señales</h3>
+                    <button class="add-work-btn" data-work="senales">Agregar</button>
+                </div>
+                <div class="work-type" data-type="barreras">
+                    <h3>Barreras Metálicas</h3>
+                    <button class="add-work-btn" data-work="barreras">Agregar</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="work-details" id="work-details-container">
+            <h2>Detalle de Trabajos</h2>
+            <div class="no-works-message">No hay trabajos agregados. Seleccione trabajos de la sección anterior.</div>
+            <!-- Los trabajos seleccionados se agregarán aquí dinámicamente -->
+        </section>
+
+        <section class="monthly-distribution">
+            <h2>Distribución Mensual</h2>
+            <div class="distribution-chart">
+                <div class="chart-container" id="monthly-chart">
+                    <!-- El gráfico de distribución mensual se generará aquí -->
+                </div>
+            </div>
+            <div class="monthly-table-container">
+                <table id="monthly-table">
+                    <thead>
+                        <tr>
+                            <th>Trabajo</th>
+                            <th>Ene</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Abr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                            <th>Jul</th>
+                            <th>Ago</th>
+                            <th>Sep</th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dic</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthly-data">
+                        <!-- Los datos mensuales se generarán aquí -->
+                    </tbody>
+                    <tfoot>
+                        <tr id="monthly-totals">
+                            <th>Total</th>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <th id="grand-total">0</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+
+        <section class="budget-summary">
+            <h2>Resumen del Presupuesto</h2>
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>Pavimentación</h3>
+                    <p class="amount" id="pavimentacion-total">$0</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Pintura</h3>
+                    <p class="amount" id="pintura-total">$0</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Señales</h3>
+                    <p class="amount" id="senales-total">$0</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Barreras Metálicas</h3>
+                    <p class="amount" id="barreras-total">$0</p>
+                </div>
+                <div class="summary-card total">
+                    <h3>Presupuesto Total</h3>
+                    <p class="amount" id="presupuesto-total">$0</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="actions">
+            <button id="generate-report-btn">Generar Informe</button>
+            <button id="save-budget-btn">Guardar Presupuesto</button>
+            <button id="reset-btn">Reiniciar</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sistema de Presupuesto de Mantenimiento de Autopistas</p>
+    </footer>
+
+    <!-- Templates para generación dinámica de contenido -->
+    <template id="work-detail-template">
+        <div class="work-detail-item" data-work-id="">
+            <div class="work-header">
+                <h3 class="work-title"></h3>
+                <button class="remove-work-btn">Eliminar</button>
+            </div>
+            <div class="work-resources">
+                <h4>Recursos</h4>
+                <table class="resources-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Unidad</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario ($)</th>
+                            <th>Subtotal ($)</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="resources-body">
+                        <!-- Los recursos se agregarán aquí -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right">Total:</td>
+                            <td class="work-subtotal">$0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <button class="add-resource-btn">Agregar Recurso</button>
+            </div>
+            <div class="work-schedule">
+                <h4>Distribución Mensual (%)</h4>
+                <div class="month-sliders">
+                    <!-- Los sliders de distribución mensual se agregarán aquí -->
+                </div>
+                <div class="total-percentage">
+                    Total asignado: <span class="percentage-allocated">0</span>%
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="resource-row-template">
+        <tr class="resource-row">
+            <td>
+                <input type="text" class="resource-name" placeholder="Nombre del recurso">
+            </td>
+            <td>
+                <input type="text" class="resource-unit" placeholder="Unidad">
+            </td>
+            <td>
+                <input type="number" class="resource-quantity" min="0" step="0.01" value="0">
+            </td>
+            <td>
+                <input type="number" class="resource-price" min="0" step="0.01" value="0">
+            </td>
+            <td class="resource-subtotal">$0</td>
+            <td>
+                <button class="delete-resource-btn">Eliminar</button>
+            </td>
+        </tr>
+    </template>
+
+    <template id="month-slider-template">
+        <div class="month-slider">
+            <label class="month-label"></label>
+            <input type="range" class="month-allocation" min="0" max="100" value="0">
+            <span class="allocation-value">0%</span>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
